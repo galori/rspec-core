@@ -60,6 +60,10 @@ module FormatterSupport
    ::RSpec::Core::Notifications::StartNotification.new count
   end
 
+  def stop_notification
+   ::RSpec::Core::Notifications::ExamplesNotification.new reporter.instance_variable_get('@examples')
+  end
+
   def example_notification(specific_example = example)
    ::RSpec::Core::Notifications::ExampleNotification.new specific_example
   end

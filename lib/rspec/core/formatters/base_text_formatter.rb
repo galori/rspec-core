@@ -31,7 +31,7 @@ module RSpec
         #
         # @param notification [NullNotification]
         def dump_failures(notification)
-          return if notification.failures.empty?
+          return if notification.failure_notifications.empty?
           output.puts
           output.puts "Failures:"
           notification.failure_notifications.each_with_index do |failure, index|

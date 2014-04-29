@@ -129,7 +129,7 @@ module RSpec::Core
     # @private
     def stop
       @duration = (RSpec::Core::Time.now - @start).to_f if @start
-      notify :stop, Notifications::NullNotification
+      notify :stop, Notifications::ExamplesNotification.new(@examples)
     end
 
     # @private

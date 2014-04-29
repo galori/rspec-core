@@ -26,6 +26,18 @@ module RSpec::Core
     # @attr example [RSpec::Core::Example] the current example
     ExampleNotification = Struct.new(:example)
 
+    # The `ExamplesNotification` represents notifications sent by the reporter
+    # which contain information about all the current examples. It is used by
+    # formatters to access information about all example.
+    #
+    # @example
+    #   def stop(notification)
+    #     puts "Hey I ran #{notification.examples.size}"
+    #   end
+    #
+    # @attr examples [Array(RSpec::Core::Example)] the current examples
+    ExamplesNotification = Struct.new(:examples)
+
     # The `FailedExampleNotification` extends `ExampleNotification` with
     # things useful for failed specs.
     #
@@ -203,14 +215,41 @@ module RSpec::Core
       private :used
     end
 
+    # The `PendingExamplesNotification` represents notifications sent by the
+    # reporter which contain information about the pending examples encountered
+    # by the reporter. It is used by formatters to access information about
+    # those examples.
+    #
+    # @example
+    #   def dump_pending(notification)
+    #     notification.pending_examples.each do |example|
+    #       puts "Hey I need finishing! #{example.description}"
+    #     end
+    #   end
+    #
+    # @attr pending_examples [Array(RSpec::Core::Example)] the pending examples
     PendingExamplesNotification = Struct.new(:pending_examples)
-    FailedExamplesNotification  = Struct.new(:failures) do
+
+    # The `FailedExamplesNotification` represents notifications sent by the
+    # reporter which contain information about the failed examples encountered
+    # by the reporter. It is used by formatters to access information about
+    # those examples.
+    #
+    # @example
+    #   def dump_failures(notification)
+    #     notification.failed_examples.each do |example|
+    #       puts "Bad times, #{example.description} failed."
+    #     end
+    #   end
+    #
+    # @attr failed_examples [Array(RSpec::Core::Example)] the failed examples
+    FailedExamplesNotification  = Struct.new(:failed_examples) do
 
       # @return [Array(Rspec::Core::Notifications::FailedExampleNotification]
       #         returns failures as notifications
       def failure_notifications
         @failure_notifications ||=
-          failures.map do |failure|
+          failed_examples.map do |failure|
             FailedExampleNotification.new(failure)
           end
       end
