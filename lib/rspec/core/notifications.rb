@@ -203,6 +203,19 @@ module RSpec::Core
       private :used
     end
 
+    PendingExamplesNotification = Struct.new(:pending_examples)
+    FailedExamplesNotification  = Struct.new(:failures) do
+
+      # @return [Array(Rspec::Core::Notifications::FailedExampleNotification]
+      #         returns failures as notifications
+      def failure_notifications
+        @failure_notifications ||=
+          failures.map do |failure|
+            FailedExampleNotification.new(failure)
+          end
+      end
+    end
+
     # The `SummaryNotification` holds information about the results of running
     # a test suite. It is used by formatters to provide information at the end
     # of the test run.

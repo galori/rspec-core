@@ -31,10 +31,10 @@ module RSpec
         #
         # @param notification [NullNotification]
         def dump_failures(notification)
-          return if failed_example_notifications.empty?
+          return if notification.failures.empty?
           output.puts
           output.puts "Failures:"
-          failed_example_notifications.each_with_index do |failure, index|
+          notification.failure_notifications.each_with_index do |failure, index|
             output.puts
             output.puts "#{short_padding}#{index.next}) #{failure.description}"
             failure.colorized_message_lines(ConsoleCodes).each do |line|
@@ -78,7 +78,7 @@ module RSpec
 
         # @private
         def dump_pending(notification)
-          unless pending_examples.empty?
+          unless notification.pending_examples.empty?
             output.puts
             output.puts "Pending:"
             pending_examples.each do |pending_example|

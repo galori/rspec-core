@@ -80,6 +80,10 @@ module FormatterSupport
     ::RSpec::Core::Notifications::SeedNotification.new seed, used
   end
 
+  def failed_examples_notification
+    ::RSpec::Core::Notifications::FailedExamplesNotification.new reporter.instance_variable_get('@failure_notifications')
+  end
+
   def summary_notification(duration, examples, failed, pending, time)
     ::RSpec::Core::Notifications::SummaryNotification.new duration, examples, failed, pending, time
   end

@@ -40,7 +40,7 @@ RSpec.describe RSpec::Core::Formatters::BaseTextFormatter do
 
     def run_all_and_dump_failures
       group.run(reporter)
-      send_notification :dump_failures, null_notification
+      send_notification :dump_failures, failed_examples_notification
     end
 
     it "preserves formatting" do

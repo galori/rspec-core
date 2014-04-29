@@ -113,8 +113,8 @@ module RSpec::Core
       begin
         stop
         notify :start_dump,    Notifications::NullNotification
-        notify :dump_pending,  Notifications::NullNotification
-        notify :dump_failures, Notifications::NullNotification
+        notify :dump_pending,  Notifications::PendingExamplesNotification.new(@pending_examples)
+        notify :dump_failures, Notifications::FailedExamplesNotification.new(@failed_examples)
         notify :deprecation_summary, Notifications::NullNotification
         notify :dump_summary, Notifications::SummaryNotification.new(@duration, @examples, @failed_examples, @pending_examples, @load_time)
         unless mute_profile_output?
