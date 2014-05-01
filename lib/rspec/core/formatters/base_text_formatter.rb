@@ -81,7 +81,7 @@ module RSpec
           unless notification.pending_examples.empty?
             output.puts
             output.puts "Pending:"
-            pending_examples.each do |pending_example|
+            notification.pending_examples.each do |pending_example|
               output.puts pending_color("  #{pending_example.full_description}")
               output.puts detail_color("    # #{pending_example.execution_result.pending_message}")
               output.puts detail_color("    # #{format_caller(pending_example.location)}")
