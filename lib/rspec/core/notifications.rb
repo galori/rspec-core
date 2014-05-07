@@ -24,7 +24,18 @@ module RSpec::Core
     #   end
     #
     # @attr example [RSpec::Core::Example] the current example
-    ExampleNotification = Struct.new(:example)
+    ExampleNotification = Struct.new(:example) do
+      # @private
+      def self.for(example)
+        if example.execution_result.pending_fixed?
+          PendingExampleFixedNotification.new(example)
+        elsif example.execution_result.status == :failed
+          FailedExampleNotification.new(example)
+        else
+          new(example)
+        end
+      end
+    end
 
     # The `ExamplesNotification` represents notifications sent by the reporter
     # which contain information about all the current examples. It is used by
@@ -250,7 +261,7 @@ module RSpec::Core
       def failure_notifications
         @failure_notifications ||=
           failed_examples.map do |failure|
-            FailedExampleNotification.new(failure)
+            ExampleNotification.for(failure)
           end
       end
     end
