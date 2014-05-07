@@ -58,21 +58,11 @@ module RSpec
           output.puts "\nFinished in #{summary.formatted_duration}" +
                       " (files took #{summary.formatted_load_time} to load)\n"
           output.puts summary.colorize_with ConsoleCodes
-          dump_commands_to_rerun_failed_examples
-        end
-
-        # @api public
-        #
-        # Outputs commands which can be used to re-run failed examples.
-        #
-        def dump_commands_to_rerun_failed_examples
-          return if failed_examples.empty?
-          output.puts
-          output.puts("Failed examples:")
-          output.puts
-
-          failed_examples.each do |example|
-            output.puts(failure_color("rspec #{RSpec::Core::Metadata::relative_path(example.location)}") + " " + detail_color("# #{example.full_description}"))
+          unless summary.failed_examples.empty?
+            output.puts
+            output.puts("Failed examples:")
+            output.puts
+            output.puts summary.colorized_rerun_commands(ConsoleCodes).join("\n")
           end
         end
 

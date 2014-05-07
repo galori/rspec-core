@@ -313,6 +313,25 @@ module RSpec::Core
         end
       end
 
+      # @api public
+      #
+      # Formats failures into a rerunable command format.
+      #
+      # @param colorizer [#wrap] An object which supports wrapping text with
+      #                          specific colors.
+      # @return [String] A colorized summary line.
+      def colorized_rerun_commands(colorizer)
+        failed_examples.map do |example|
+          colorizer.wrap(
+            "rspec #{RSpec::Core::Metadata::relative_path(example.location)}",
+            RSpec.configuration.failure_color
+          ) + " " +
+          colorizer.wrap(
+            "# #{example.full_description}", RSpec.configuration.detail_color
+          )
+        end
+      end
+
       # @return [String] a formatted version of the time it took to run the suite
       def formatted_duration
         Formatters::Helpers.format_duration(duration)

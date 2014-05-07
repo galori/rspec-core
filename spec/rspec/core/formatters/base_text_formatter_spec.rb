@@ -19,16 +19,15 @@ RSpec.describe RSpec::Core::Formatters::BaseTextFormatter do
       send_notification :dump_summary, summary_notification(2, examples(2), examples(2), examples(2), 0)
       expect(output.string).to match("2 examples, 2 failures, 2 pending")
     end
-  end
 
-  describe "#dump_commands_to_rerun_failed_examples" do
     it "includes command to re-run each failed example" do
       group = RSpec::Core::ExampleGroup.describe("example group") do
         it("fails") { fail }
       end
       line = __LINE__ - 2
       group.run(reporter)
-      formatter.dump_commands_to_rerun_failed_examples
+      examples = group.examples
+      send_notification :dump_summary, summary_notification(1, examples, examples, [], 0)
       expect(output.string).to include("rspec #{RSpec::Core::Metadata::relative_path("#{__FILE__}:#{line}")} # example group fails")
     end
   end
