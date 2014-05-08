@@ -57,7 +57,7 @@ module RSpec
       #   all parent example groups).
       delegate_to_metadata :full_description
       # @return [String] the exact source location of this example in a form
-      #   like `./path/to/spec.rb:17`
+      #   like `/path/to/spec.rb:17`
       delegate_to_metadata :location
       # @return [Boolean] flag that indicates that the example is not expected to pass.
       #   It will be run and will either have a pending result (if a failure occurs)
@@ -66,6 +66,12 @@ module RSpec
       # @return [Boolean] flag that will cause the example to not run.
       #   The {ExecutionResult} status will be `:pending`.
       delegate_to_metadata :skip
+
+      # @return [String] the relative source location of this example in a form
+      #   like `./path/to/spec.rb:17`
+      def relative_location
+        RSpec::Core::Metadata::relative_path(location)
+      end
 
       # Returns the string submitted to `example` or its aliases (e.g.
       # `specify`, `it`, etc).  If no string is submitted (e.g. `it { is_expected.to

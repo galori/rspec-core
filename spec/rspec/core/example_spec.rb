@@ -613,6 +613,13 @@ RSpec.describe RSpec::Core::Example, :parent_metadata => 'sample' do
     end
   end
 
+  describe "#relative_location" do
+    it "returns the relative location from the working dir" do
+      example = example_group.example { true }
+      expect(example.relative_location).to eq "#{relative_path(__FILE__)}:#{__LINE__ - 1}"
+    end
+  end
+
   describe "timing" do
     it "uses RSpec::Core::Time as to not be affected by changes to time in examples" do
       reporter = double(:reporter).as_null_object

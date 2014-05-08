@@ -334,7 +334,7 @@ module RSpec::Core
       def colorized_rerun_commands(colorizer)
         failed_examples.map do |example|
           colorizer.wrap(
-            "rspec #{RSpec::Core::Metadata::relative_path(example.location)}",
+            "rspec #{example.relative_location}",
             RSpec.configuration.failure_color
           ) + " " +
           colorizer.wrap(
