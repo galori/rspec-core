@@ -326,21 +326,31 @@ module RSpec::Core
 
       # @api public
       #
+      # Returns an array of rerun command and description tuples
+      #
+      # @return [Array(Array(String,String))] rerun commands and example descriptions
+      def rerun_commands
+        failed_examples.map do |example|
+          [
+            "rspec #{example.relative_location}",
+            "# #{example.full_description}"
+          ]
+        end
+      end
+
+      # @api public
+      #
       # Formats failures into a rerunable command format.
       #
       # @param colorizer [#wrap] An object which supports wrapping text with
       #                          specific colors.
       # @return [String] A colorized summary line.
       def colorized_rerun_commands(colorizer)
-        failed_examples.map do |example|
-          colorizer.wrap(
-            "rspec #{example.relative_location}",
-            RSpec.configuration.failure_color
-          ) + " " +
-          colorizer.wrap(
-            "# #{example.full_description}", RSpec.configuration.detail_color
-          )
-        end
+        "\nFailed Examples:\n\n" +
+        rerun_commands.map do |(command, description)|
+          colorizer.wrap(command,     RSpec.configuration.failure_color) + " " +
+          colorizer.wrap(description, RSpec.configuration.detail_color)
+        end.join("\n")
       end
 
       # @return [String] a formatted version of the time it took to run the suite

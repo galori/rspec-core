@@ -40,12 +40,13 @@ module FormatterSupport
   end
 
   def example
-    instance_double("RSpec::Core::Example",
-                    :description      => "Example",
-                    :full_description => "Example",
-                    :execution_result => { :exception => Exception.new },
-                    :location         => "",
-                    :metadata         => {}
+    instance_double(RSpec::Core::Example,
+                    :description       => "Example",
+                    :full_description  => "Example",
+                    :execution_result  => { :exception => Exception.new },
+                    :location          => "",
+                    :relative_location => "",
+                    :metadata          => {}
                    )
   end
 
